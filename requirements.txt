@@ -4,7 +4,4 @@ numpy
 matplotlib
 opencv-python
 mediapipe
-numpy
 tensorflow
-pandas
-scikit-learn
