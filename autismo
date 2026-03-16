@@ -1,0 +1,61 @@
+# Importar librerías
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report
+
+# Crear datos simulados
+data = {
+    "contacto_visual": [1,0,1,0,1,0,1,0],
+    "responde_nombre": [1,0,1,0,1,0,1,0],
+    "imitacion": [1,0,1,0,1,0,1,0],
+    "gestos": [1,0,1,0,1,0,1,0],
+    "respuesta_social": [1,0,1,0,1,0,1,0],
+    "retraso_lenguaje": [0,1,0,1,0,1,0,1],
+    "interes_social": [1,0,1,0,1,0,1,0],
+    "movimientos_repetitivos": [0,1,0,1,0,1,0,1],
+    "riesgo_autismo": [0,1,0,1,0,1,0,1]
+}
+
+# Crear DataFrame
+df = pd.DataFrame(data)
+
+# Separar variables
+X = df.drop("riesgo_autismo", axis=1)
+y = df["riesgo_autismo"]
+
+# Dividir datos
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# Crear modelo
+model = RandomForestClassifier()
+
+# Entrenar modelo
+model.fit(X_train, y_train)
+
+# Predicción
+predictions = model.predict(X_test)
+
+# Resultados
+print(classification_report(y_test, predictions))
+
+# Ejemplo de evaluación de un niño
+nuevo_nino = [[
+    0,  # contacto_visual
+    0,  # responde_nombre
+    0,  # imitacion
+    0,  # gestos
+    0,  # respuesta_social
+    1,  # retraso_lenguaje
+    0,  # interes_social
+    1   # movimientos_repetitivos
+]]
+
+resultado = model.predict(nuevo_nino)
+
+if resultado[0] == 1:
+    print("Alto riesgo de autismo - requiere evaluación clínica")
+else:
+    print("Bajo riesgo de autismo")
